@@ -1,0 +1,71 @@
+import pandas as pd
+df = pd.read_csv('/home/kishor/PycharmProjects/my_hello_world/Stock price.csv')
+print(df) # for making sure that the file was imported correctly
+#Pre-inspection/visualization of the data to make sure that the datasets are compatible with the nature of algorithm proposed...for example, in this case, for linear relationship between features
+
+# Using matplotlib for data visualization
+import matplotlib.pyplot as plt
+plt.subplot (1, 2, 1)
+plt.scatter(df['Stock_Index_Price'], df['Year'], c = 'g')
+plt.ylabel('Year')
+plt.xlabel('Stock_Index_Price')
+
+plt.subplot (1, 2, 2)
+plt.scatter(df['Stock_Index_Price'], df['Interest_Rate'], c ='r')
+plt.ylabel('Interest_Rate')
+plt.xlabel('Stock_Index_Price')
+plt.show()
+
+# Using Plotly graph objects for data visualization
+import plotly
+import plotly.graph_objs as go
+plotly.offline.plot({
+    "data": [go.Scatter(x= df['Year'], y= df['Stock_Index_Price'])],
+        "layout": go.Layout(title="Year vs Stock Index Price")
+	}, auto_open=True) # here offline means offline mode of chart display. It can be online too but it has another process to follow
+
+#Using Plotly express for data visualization
+import plotly.express as px
+fig = px.scatter_3d(df, x = 'Interest_Rate', y = 'Unemployment_Rate', z = 'Stock_Index_Price', color= 'Stock_Index_Price', size_max=40, title= 'Dependency of interest rate and unemployment rate in stock index price')
+fig.show()
+
+#Assignment to variables for creating the linear regression model
+X = df [['Interest_Rate', 'Unemployment_Rate']]
+Y = df['Stock_Index_Price']
+
+#Performing Multiple Linear Regression with sklearn
+from sklearn import linear_model
+regr = linear_model.LinearRegression()
+regr.fit(X, Y)
+print ('Intercept : \n', regr.intercept_)
+print ('Coefficient : \n', regr.coef_)
+
+# Predict with sklearn
+y = regr.predict(X)
+#plt.subplot(1, 2, 1)
+#plt.scatter(df['Unemployment_Rate'], y, c = 'g')
+#plt.scatter(df['Unemployment_Rate'], Y, c = 'b')
+#plt.xlabel('Unemployment Rate')
+#plt.ylabel('Stock Index Price')
+#plt.title('Unemployment Rate vs Stock Index Price \n (predicted in green line and original data in blue dotted)')
+#plt.subplot(1,2, 2)
+#plt.scatter(df['Interest_Rate'], y, c = 'r')
+#plt.scatter(df['Interest_Rate'], Y, c = 'b')
+#plt.xlabel('Interest Rate')
+#plt.ylabel('Stock Index Price')
+#plt.title('Interest Rate vs Stock Index Price \n (predicted in red dot and original data in blue dotted)')
+#plt.plot(y, df['Stock_Index_Price'], c = 'b')
+#plt.scatter(df['Year'], y, c = 'g')
+#plt.legend()
+#plt.show()
+
+
+#Visualisation using Plotly
+import plotly.express as px
+#3D plotting with plotly
+fig = px.scatter_3d( df['Unemployment_Rate'], y,
+                 title='Unemployment Rate vs Stock Index Price \n (predicted in green line and original data in blue dotted)',
+                 color = 'FUEL CONSUMPTION IN HIGHWAY',
+                 size = 'FUEL CONSUMPTION IN HIGHWAY', size_max=20)
+fig.show()
+
