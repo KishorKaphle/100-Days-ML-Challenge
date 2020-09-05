@@ -1,0 +1,58 @@
+
+import pandas as pd
+df = pd.read_csv('/home/kishor/PycharmProjects/my_hello_world/vehicle.csv')
+print (df.head(7))
+
+import plotly.express as px
+fig = px.scatter_3d(df, x = 'ENGINESIZE', y = 'FUELCONSUMPTION_CITY', z = 'CO2EMISSIONS', title = 'Fuel consumption and CO2 emission based on engine size', color = 'ENGINESIZE')
+fig.show()
+
+#My primary goal of this code are to get answers on following
+#Which model of vehicle has highest CO2 emission?
+#Which brand has highest CO2 emission for same vehicle class?
+#Which model of vehicle has highest CO2 emission for same engine size?
+#Which model of vehicle has lowest/highest average fuel consumption?
+#Is there any relationship between fuel consumption and CO2 emission?
+
+print ('Entire row of Engine size is \n', df['ENGINESIZE'])
+print ('Maximum value of CO2 emission with max() function: \n',(df['CO2EMISSIONS']).max())
+print ('Minimum value of CO2 emission with min() function: \n',(df['CO2EMISSIONS'].min()))
+
+#First Way
+print('Display the entire row which have maximum value by using bool expression  and max() function: \n ', df[df['CO2EMISSIONS']==df['CO2EMISSIONS'].max()]) #Display the entire row which have maximum value
+
+#Second Way
+print('\n The Vehicle with maximum CO2 emission  by using argmax() function is: \n', df.iloc[df.CO2EMISSIONS.argmax()]) #Even easier way to get details of the row which have maximum value of certain feature
+print('\n The vehicle with minimum CO2 emission by argmin() function is : \n', df.iloc[df.CO2EMISSIONS.argmin()])
+
+#defining function for calculating total of any row
+def sum_row (name):
+    total = 0
+    for i in df[name]:
+        total +=i
+    return  total
+
+print ('Total fuel consumption in city is : ', sum_row('FUELCONSUMPTION_CITY'))
+
+#By using len() function
+print('Total number or rows in the file is: ', len(df)+1)
+
+#By using shape[] function, shape[0] is for number of row whereas shape[1] is for number of column
+print('Total number or rows in the file is: ', df.shape[0]+1)
+
+#For number of column
+print('Total number or column in the file is: ', df.shape[1]) # No need to do +1 because column count does not start with 0
+
+#function for calculating average of any row
+def avg (name):
+    average = sum_row(name)/(df.shape[0]+1)
+    return  average
+
+print('The average fuel consumption in the city is : ', avg('FUELCONSUMPTION_CITY'))
+
+#Another simple method to generate mean
+print (df.mean())
+
+#Now, for addressing this question: Which brand has highest CO2 emission for same vehicle class?
+#Say the class is compact for now, later on I will try to make a function as I made for getting total and average of any row
+#I am facing problem in answering above question. I will solve it soon!
