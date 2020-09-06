@@ -1,0 +1,24 @@
+#for addressing this question: Which brand has highest CO2 emission for same vehicle class?
+#Solution to yesterday's problem, Hurray!
+
+import pandas as pd
+import numpy as np
+df = pd.read_csv('/home/kishor/PycharmProjects/my_hello_world/vehicle.csv')
+#print (df['VEHICLECLASS'])
+a =[]
+lbl =[] # initializing array
+for row, r in df.iterrows():
+            for x in r:
+                if x=='COMPACT':
+                    print('\n', r['CO2EMISSIONS'])
+                    a = np.append(a, r['CO2EMISSIONS'])
+                    lbl = np.append(lbl, (r['MAKE'] + ' ' + r ['MODEL']))
+                    if max(a)== r['CO2EMISSIONS']:
+                        b = r
+
+import plotly.express as px
+fig = px.line(df, lbl, a, labels = { 'lbl' : 'Vehicle Name', 'a': 'CO2 Emissions'}, title= 'COMPACT vehicle class with their corresponding CO2 emissions')
+fig.show()
+print ('Vehicle with maximum CO2 emission with vehicle class COMPACT is: \n', b)
+
+# Same process can be applied for finding minimum CO2 emission. Only task that need to be done is by replacing  max(a) with min (a) in line 14, Happy Coding!
