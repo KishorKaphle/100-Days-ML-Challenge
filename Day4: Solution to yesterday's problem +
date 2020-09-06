@@ -22,3 +22,24 @@ fig.show()
 print ('Vehicle with maximum CO2 emission with vehicle class COMPACT is: \n', b)
 
 # Same process can be applied for finding minimum CO2 emission. Only task that need to be done is by replacing  max(a) with min (a) in line 14, Happy Coding!
+
+# Learning continues for day 4!
+# Time for Logistic Regression!
+# So firsst task of mine was getting used to sigmoid function. Hence I generated values for sigmoid function and plotted it. Code is given below:
+
+import math as mt
+arr = []
+lbl = []
+for i in range (-100,100):
+    fun = 1 / (1 + mt.exp(-i))
+    arr.append(fun)
+    lbl.append(i)
+    print ( fun)
+
+import matplotlib.pyplot as plt
+plt.plot(lbl, arr)
+plt.title('Sigmoid Function Plot')
+plt.xlabel('x')
+plt.ylabel('Sigmoid Function')
+plt.grid()
+plt.show()
