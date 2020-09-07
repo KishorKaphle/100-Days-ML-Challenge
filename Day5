@@ -1,0 +1,70 @@
+import pandas as pd
+df = pd.read_csv ('/home/kishor/PycharmProjects/Getting_Started_with_ML/diabt.csv')
+
+#(learning source: https://github.com/KishorKaphle/Getting_Started_with_ML.git)
+
+# assigning column name
+
+print (df.head())
+
+#Classifying features into dependent and independent variables
+
+features = ['Pregnancies', 'Glucose', 'BloodPressure', 'BMI', 'DiabetesPedigreeFunction', 'Age']
+
+X = df[features] # features
+y = df['Outcome'] # target variable
+
+#splitting data; dividing dataset into training and testing datasets
+
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.30, random_state=0)
+#print ('training set \n ', X_train)
+#print ('testing set \n ', X_test)
+
+#Model development and prediction
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression()
+
+#fitting the model with data
+lr.fit(X_train, y_train)
+
+# predicted value
+y_pred = lr.predict(X_test)
+
+#model evaluation using confusion matrix
+
+from sklearn import metrics
+con_matrix = metrics.confusion_matrix(y_test, y_pred)
+print ('\n Diagonal value will resent accurate predictions whereas non-diagonal elements will represent inaccurate value : \n', con_matrix)
+
+#Visualizing confusion matrix using heatmap
+
+#import plotly.express as px
+#fig = px.density_heatmap(con_matrix, title= 'confusion matrix where diagonal matrix shows accurate predictions and non-diagonal element shows inaccurate predictions', )
+# updating layout
+#fig.show()
+
+import  numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+f, ax = plt.subplots(figsize = (2, 2))
+sns.heatmap(con_matrix, vmax= 1, annot= True, square = True, fmt= 'g')
+ax.xaxis.set_label_position('bottom')
+plt.tight_layout()
+plt.xlabel('Predicted Outcome')
+plt.ylabel('Actual Outcome')
+plt.title('Confusion Matrix')
+plt.grid()
+plt.show()
+
+# Confusion matrix evaluation metrics
+
+print ('Accuracy: ', metrics.accuracy_score(y_test, y_pred))
+print ('Precision: ', metrics.precision_score(y_test, y_pred))
+print ('Recall: ', metrics.recall_score(y_test, y_pred))
+
+
+# Some more things to be done yet! I will continue! Happy Coding!
