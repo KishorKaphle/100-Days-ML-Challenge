@@ -57,4 +57,32 @@ window.mainloop() # this part makes sure that the whole program for GUI remains 
 #will continue learning with the project work
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
+#Getting more insights on dataset
 
+import pandas as pd
+from pandas import set_option
+
+set_option ('display.width', 100)
+
+set_option ('precision', 2)
+
+names = ['preg', 'gluco', 'bp', 'skinthick', 'insulin', 'bmi', 'dpf', 'age', 'outcome']
+df = pd.read_csv('diabt.csv')
+print (df.head())
+print ('dimension of the data is : \n', df.shape) # for checking the dimensionality of the dataset
+print ('\n', df.describe())#getting the statistical gist of the data
+
+# reveiwing the correlation between attributes
+correlations = df.corr(method = 'pearson')
+
+#for better display layout
+
+print ('\n correlations are: \n', correlations)
+
+
+#reveiwing skew of attribute distribution
+print ('\n skwness of features:\n \n', df.skew())
+
+#learning continues!
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
