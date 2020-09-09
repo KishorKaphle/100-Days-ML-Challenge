@@ -86,3 +86,81 @@ print ('\n skwness of features:\n \n', df.skew())
 #learning continues!
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
+#making sure that dataset is present
+import pandas as pd
+df = pd. read_csv ('Heart Fail Prediction.csv')
+print (df.head())
+
+#visualizing data more meaningfully
+
+#from seaborn
+import seaborn as sns
+fig = sns.pairplot(df)
+
+# getting statistical meaining of dataset
+
+print (df.describe())
+
+#checking for null value
+
+df.isnull().sum()
+
+# building a simple logistic model
+
+features = ['age', 'anaemia', 'creatinine_phosphokinase', 'diabetes', 'ejection_fraction', 'high_blood_pressure', 'platelets',
+            'serum_creatinine', 'serum_sodium', 'sex', 'smoking', 'time']
+
+X = df [features]
+y = df ['DEATH_EVENT']
+
+
+#splitting training and testing data
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split (X, y, test_size = 0.2, random_state = 0)
+
+
+#model development and prediction
+
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression()
+
+#fitting the model with data
+
+lr.fit(X_train, y_train)
+
+
+#predicted values
+
+y_pred = lr.predict(X_test)
+
+print (y_pred)
+
+import matplotlib.pyplot as plt
+plt.hist(y_pred, color = 'b')
+plt.hist(y_test, color = 'r')
+plt.title ('Red bar represent actual outcome where as blue bar represent predicted outcome')
+plt. xlabel ('Death case')
+plt.ylabel ('frequency')
+plt.legend()
+plt.grid()
+plt.show()
+
+#model evaluation using confusion matrix
+
+from sklearn import metrics
+conf_mat = metrics.confusion_matrix(y_test, y_pred)
+print ('\n confusion matrix: \n', conf_mat)
+
+
+#confusion matrix evaluation
+print ('\n Accuracy of prediction: ', metrics.accuracy_score(y_test, y_pred)
+    )
+print ('\n Precision of prediction: ', metrics.precision_score(y_test, y_pred)
+      )
+print ('\n Recall: ', metrics.recall_score(y_test, y_pred))
+
+# I am aware that accuracy percentage of arround 73% is low after all I am using simple logistic regression but soon as I learned other powerful ML algorithm I will look into it and make the prediction more accurate.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
