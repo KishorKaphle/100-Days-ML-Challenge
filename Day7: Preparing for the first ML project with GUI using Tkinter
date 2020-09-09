@@ -1,0 +1,60 @@
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#my simple GUI tutorial
+
+from tkinter import *
+window = Tk()
+window.geometry ('500x500')
+window.title ('Welcome!')
+#label1 = Label(window, text ="Welcome to Tkinter", relief = 'solid', fg = 'black', bg  = 'green', font = ('arial', 16, 'bold')).pack()
+
+#adding button in GUI
+
+#button1 = Button (window, text = 'Demo',relief = RIDGE, fg = 'white', bg  = 'yellow', font = ('arial', 16, 'bold')).pack()
+
+
+
+#defining a function
+
+def printt ():
+    print ('Demo Display')
+
+
+def exit1():
+    exit()
+    
+
+#for Registration Form display
+
+label1 = Label(window, text = 'Registration Form', relief = 'solid', width =20, font = ('arial', 19, 'bold'))
+               
+label1.place(x =100, y =100)
+
+#for First Name display
+
+label2 = Label(window, text = 'First Name:', width =20, font = ('arial', 10, 'bold'))
+               
+label2.place(x =70, y =150)
+
+#for last name display
+label3 = Label(window, text = 'Last Name:', width =20, font = ('arial', 10, 'bold'))
+               
+label3.place(x =70, y =180)
+
+
+#lets create buttons
+
+b1 = Button(window, text = 'Login', width = 12, bg ='brown', fg= 'white', command = printt())
+b1.place (x = 80, y = 300)
+
+b2 = Button(window, text = 'Exit', width = 12, bg ='brown', fg= 'white', command = exit1())
+b2.place (x = 300, y = 300)
+
+
+
+window.mainloop() # this part makes sure that the whole program for GUI remains in the loop untill the tkinter window/display is closed
+
+#will continue learning with the project work
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
