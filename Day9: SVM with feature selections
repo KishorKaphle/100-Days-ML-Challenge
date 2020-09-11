@@ -1,0 +1,114 @@
+import pandas as pd
+import numpy as np
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+
+df = pd.read_csv(r'Heart Fail Prediction.csv')
+print(df.head())
+
+
+# differentiating independent and dependent columns
+
+X = df.iloc[:, 0: 10] # indepent columns
+
+y = df.iloc[:, -1] #outcome columns i.e death events
+
+
+
+# Since the data has total features of 12, let's feature out most impacting 6 features.
+
+
+# 1. using SelectKBest class
+
+bestfeatures = SelectKBest(score_func = chi2, k = 6)
+fit = bestfeatures.fit(X, y) #applying the chi2 rule
+dfcolumns = pd.DataFrame(X.columns)
+dfscores = pd.DataFrame(fit.scores_)
+a = fit.scores_
+
+feat_imp = pd.Series(fit.scores_, index = X.columns)
+
+#for better visualization, concatinating two dataframes
+
+featureScores = pd.concat([dfcolumns, dfscores], axis=1)
+featureScores.columns = ['specifications', 'score'] # naming the dataframe columns
+print('\n 5 Best Features are: \n \n', featureScores.nlargest(6, 'score')) # printig best 6 features
+
+#print (feat_imp)
+
+
+# 2. Using Feature Importance
+
+# using Extra Tree Classifier for extracting the top 5 features for the dataset
+
+from sklearn.ensemble import ExtraTreesClassifier
+import matplotlib.pyplot as plt
+model = ExtraTreesClassifier()
+model.fit(X, y)
+
+print(model.feature_importances_)
+
+#plotting graph of feature_importance for better visualization
+
+feat_importances = pd.Series(model.feature_importances_, index=X.columns)
+
+plt.subplot(1, 4, 1)
+feat_importances.nlargest(12).plot(kind = 'barh')
+plt.title ('with extra trees classifier')
+
+plt.subplot(1, 4, 4)
+
+plt.title ('with chi2 rule')
+feat_imp.plot(kind = 'barh')
+
+
+plt.show()
+
+# 3. correlation matrix with Heatmap
+import seaborn as sns
+
+corrmat = df.corr() # correlation of each features in dataset
+top_corr_features = corrmat.index
+plt.figure(figsize = (25, 25))
+
+fig = sns.heatmap(df[top_corr_features].corr(), annot = True, cmap = 'Accent')
+
+
+#now that we kind of know which of the features are more important for out model as features, we will do SVM model now
+
+features = ['creatinine_phosphokinase','ejection_fraction', 'high_blood_pressure', 'platelets',
+            'serum_creatinine', 'serum_sodium']
+
+X = df [features]
+y = df ['DEATH_EVENT']
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 109)
+
+# Importing the SVM model
+
+from sklearn import svm
+
+#creating svm classifier
+
+clfr = svm.SVC(kernel = 'poly') # using linear kernel
+
+#training the model using the training sets
+
+clfr.fit(X_train, y_train)
+
+
+# predicting the outcomes from the testing dataset
+
+y_pred = clfr.predict(X_test)
+
+
+#evaluating the model
+
+from sklearn import metrics
+
+print ('\n Accuracy: ', metrics.accuracy_score(y_test, y_pred))
+print ('\n Precision: ', metrics.precision_score(y_test, y_pred))
+print ('\n Recall:', metrics.recall_score(y_test, y_pred))
+
